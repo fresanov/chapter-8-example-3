@@ -19,7 +19,7 @@ const PORT = process.env.PORT;
 // Registers a HTTP GET route for video streaming.
 //
 app.get("/video", async (req, res) => { // Route for streaming video.
-    
+
     const videoPath = "./videos/SampleVideo_1280x720_1mb.mp4";
     const stats = await fs.promises.stat(videoPath);
 
@@ -28,6 +28,28 @@ app.get("/video", async (req, res) => { // Route for streaming video.
         "Content-Type": "video/mp4",
     });
     fs.createReadStream(videoPath).pipe(res);
+});
+
+//
+// Home handler which acts as a video player.
+//
+app.get('/', (req, res) => {
+    res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Video Stream</title>
+        </head>
+        <body>
+        <h1>Video Stream</h1>
+            <video controls width="500">
+
+                <source src="/video" type="video/mp4">
+                Sorry, your browser doesn't support embedded videos.
+            </video>
+        </body>
+        </html>
+    `);
 });
 
 //
